@@ -14,9 +14,9 @@ import ErrorMessag from "../ErrorMessage/ErrorMessage";
 interface Image {
   id: string;
   description: string;
-  url: {
+  urls: {
     small: string;
-    thumb: string;
+    regular: string;
   };
 }
 
