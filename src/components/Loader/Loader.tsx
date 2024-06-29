@@ -1,11 +1,12 @@
 import { MagnifyingGlass } from "react-loader-spinner";
 import css from "./Loader.module.css";
+import React from "react";
 
-export default function Loader({ isLoading }) {
+const Loader: React.FC = () => {
   return (
     <div className={css.loader}>
       <MagnifyingGlass
-        visible={isLoading}
+        visible={true}
         height="80"
         width="80"
         ariaLabel="magnifying-glass-loading"
@@ -16,4 +17,6 @@ export default function Loader({ isLoading }) {
       />
     </div>
   );
-}
+};
+
+export default Loader;

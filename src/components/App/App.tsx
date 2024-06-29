@@ -11,37 +11,51 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
 import ErrorMessag from "../ErrorMessage/ErrorMessage";
 
-export default function App() {
-  const [images, setImages] = useState([]);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState(false);
-  const [totalImages, setTotalImages] = useState(1);
+interface Image {
+  id: string;
+  description: string;
+  url: {
+    small: string;
+    thumb: string;
+  };
+}
+
+interface ImageUrl {
+  alt: string;
+  url: string;
+}
+
+const App: React.FC = () => {
+  const [images, setImages] = useState<Image[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<ImageUrl | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [totalImages, setTotalImages] = useState<number>(1);
 
   useEffect(() => {
     if (query === "") return;
 
-    async function asyncWrapper() {
+    const asyncWrapper = async () => {
       try {
-        setError(false);
+        setError(null);
         setIsLoading(true);
         const { results, total_pages } = await getImages(query, page);
 
         setImages((prevState) => [...prevState, ...results]);
         setTotalImages(total_pages);
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.message);
       } finally {
         setIsLoading(false);
       }
-    }
+    };
     asyncWrapper();
   }, [query, page]);
 
-  const getQuery = (query) => {
+  const getQuery = (query: string) => {
     setQuery(query);
     setImages([]);
     setPage(1);
@@ -54,14 +68,14 @@ export default function App() {
 
   // ======  Modal ============
 
-  function openModal(alt, url) {
+  const openModal = (alt: string, url: string) => {
     setIsOpen(true);
     setImageUrl({ alt, url });
-  }
-  function closeModal() {
+  };
+  const closeModal = () => {
     setIsOpen(false);
-    setImageUrl({ alt: "", url: "" });
-  }
+    setImageUrl(null);
+  };
 
   return (
     <div>
@@ -78,9 +92,11 @@ export default function App() {
       {isOpen && imageUrl && (
         <ImageModal isOpen={isOpen} imageUrl={imageUrl} onClose={closeModal} />
       )}
-      {isLoading && <Loader isLoading={isLoading} />}
-      {error && <ErrorMessag message={error} />}
+      {isLoading && <Loader />}
+      {error && <ErrorMessag />}
       <Toaster />
     </div>
   );
-}
+};
+
+export default App;
