@@ -1,0 +1,19 @@
+.containerBtn {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin-top: 30px;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  border: none;
+  background-color: rgb(45, 45, 206);
+  color: white;
+  transition: 0.3s;
+}
+
+.btn:focus,
+.btn:hover {
+  background-color: #152381;
+}
