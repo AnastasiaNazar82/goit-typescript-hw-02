@@ -1,12 +1,19 @@
-// import { Field, Form, Formik, ErrorMessage } from "formik";
 import { IoIosSearch } from "react-icons/io";
 import toast from "react-hot-toast";
 import css from "./SearchBar.module.css";
+import { FormEvent } from "react";
 
-export default function SearchBart({ onSubmit }) {
-  const handleSubmit = (e) => {
+interface SearchBartProps {
+  onSubmit: (value: string) => void;
+}
+
+export default function SearchBart({ onSubmit }: SearchBartProps) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const value = e.target.search.value.trim();
+    const target = e.target as typeof e.target & {
+      search: { value: string };
+    };
+    const value = target.search.value.trim();
 
     if (!value) {
       return toast.error("This input can't be empty!", {
